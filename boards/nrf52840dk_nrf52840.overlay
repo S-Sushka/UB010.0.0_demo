@@ -62,7 +62,7 @@
 
 
 
-&uart0
+&uart1
 {
 	current-speed = <115200>;
 
@@ -70,6 +70,12 @@
     pinctrl-0 = <&uart_PR9200_default>;
     pinctrl-1 = <&uart_PR9200_sleep>;
     pinctrl-names = "default", "sleep";
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
 };
 
 

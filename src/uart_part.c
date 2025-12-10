@@ -4,7 +4,7 @@
 
 
 
-const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart0));
+const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart1));
 
 
 int uart_begin(uart_irq_callback_user_data_t rx_callback) 
