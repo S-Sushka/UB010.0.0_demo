@@ -11,3 +11,4 @@
 
 
 int usb_begin(uart_irq_callback_user_data_t rx_callback);
+void usb_sendByte(uint8_t data);

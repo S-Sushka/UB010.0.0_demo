@@ -44,12 +44,10 @@ static void uart_rx_handler(const struct device *dev, void *user_data)
     uint8_t byteBuf = 0;
     if (uart_irq_update(dev) && uart_irq_rx_ready(dev)) 
 	{
-        SEGGER_RTT_printf(0, " --- UART --- :");
 		while (uart_fifo_read(dev, &byteBuf, 1))
 		{
-            SEGGER_RTT_printf(0, "%x ", byteBuf);
+			usb_sendByte(byteBuf); // Эхо от UARTа к USB
         }
-        SEGGER_RTT_printf(0, "\n");
 	}	
 }
 
@@ -61,12 +59,10 @@ static void usb_rx_handler(const struct device *dev, void *user_data)
     uint8_t byteBuf = 0;
     if (uart_irq_update(dev) && uart_irq_rx_ready(dev)) 
 	{
-        SEGGER_RTT_printf(0, " --- USB CDC --- :");
 		while (uart_fifo_read(dev, &byteBuf, 1))
 		{
-            SEGGER_RTT_printf(0, "%x ", byteBuf);
+            uart_sendByte(byteBuf); // Эхо от USB к UARTу
         }
-        SEGGER_RTT_printf(0, "\n");
 	}	
 }
 

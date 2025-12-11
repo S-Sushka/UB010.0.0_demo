@@ -1,7 +1,5 @@
 #include "uart_part.h"
 
-#include <zephyr/drivers/gpio.h>
-
 
 
 const struct device *uart = DEVICE_DT_GET(DT_NODELABEL(uart1));
@@ -28,4 +26,9 @@ int uart_begin(uart_irq_callback_user_data_t rx_callback)
 	uart_irq_rx_enable(uart);	
 
     return 0;
+}
+
+void uart_sendByte(uint8_t data) 
+{
+    uart_poll_out(uart, data);
 }
