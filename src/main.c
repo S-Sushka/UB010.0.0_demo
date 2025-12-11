@@ -7,7 +7,8 @@
 
 #include "led_part.h"
 #include "button_part.h"
-
+#include "uart_part.h"
+#include "usb_part.h"
 
 
 void animation_work_handler(struct k_work *work) 
@@ -36,16 +37,47 @@ void button_callback_handler(const struct device *port, struct gpio_callback *cb
 }
 
 
+static void uart_rx_handler(const struct device *dev, void *user_data)
+{
+	ARG_UNUSED(user_data);
+
+    uint8_t byteBuf = 0;
+    if (uart_irq_update(dev) && uart_irq_rx_ready(dev)) 
+	{
+		while (uart_fifo_read(dev, &byteBuf, 1))
+		{
+			usb_sendByte(byteBuf); // Эхо от UARTа к USB
+        }
+	}	
+}
+
+
+static void usb_rx_handler(const struct device *dev, void *user_data)
+{
+	ARG_UNUSED(user_data);
+
+    uint8_t byteBuf = 0;
+    if (uart_irq_update(dev) && uart_irq_rx_ready(dev)) 
+	{
+		while (uart_fifo_read(dev, &byteBuf, 1))
+		{
+            uart_sendByte(byteBuf); // Эхо от USB к UARTу
+        }
+	}	
+}
+
 
 int main(void)
 {
 	led_begin();
 	button_begin(button_callback_handler);
 	
+	uart_begin(uart_rx_handler);
+	usb_begin(usb_rx_handler);
 
 	while (1) 
-	{
-		k_msleep(K_FOREVER);
+	{	
+		k_msleep(1000);
 	}
 
 	return 0;

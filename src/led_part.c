@@ -54,5 +54,5 @@ int led_updatePixeles(struct led_rgb *px0, struct led_rgb *px1, struct led_rgb *
     led_setPixel(0, px0);
     led_setPixel(1, px1);
     led_setPixel(2, px2);
-    led_update();
+    return led_update();
 }
